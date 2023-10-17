@@ -1,14 +1,20 @@
 export default class Vector {
   constructor(x, y) {
-    this.x = x;
-    this.y = y;
-
-    this.add = this.add.bind(this);
+    this.x = x || 0;
+    this.y = y || 0;
   }
 
-  add(vector) {
+  add = (vector) => {
+    if (!vector.x || !vector.y) {
+
+    }
     this.x += vector.x;
     this.y += vector.y;
+  }
+
+  sub = (vector) => {
+    this.x -= vector.x;
+    this.y -= vector.y;
   }
 
   mult(scalar) {
@@ -16,7 +22,26 @@ export default class Vector {
     this.y *= scalar;
   }
 
-  max(max) {
+  multVector(vector) {
+    this.x *= vector.x;
+    this.y *= vector.y;
+  }
+
+  normalize() {
+    const length = Math.sqrt((this.x * this.x) + (this.y * this.y));
+    this.x = this.x / length;
+    this.y = this.y / length;
+  }
+
+  set(vector) {
+    if (!vector.x || !vector.y) {
+        return;
+    }
+    this.x = vector.x;
+    this.y = vector.y;
+  }
+
+  limit(max) {
     if (this.x > max) {
       this.x = max;
     }

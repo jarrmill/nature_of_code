@@ -3,7 +3,7 @@ import { Application, Container }from 'pixi.js';
 import Shape from './Shape.js';
 
 const app = new Application({
-    background: '#1099bb',
+    background: '#aaeeaa',
     antialias: true,
     resizeTo: window,
 });
@@ -17,7 +17,6 @@ let mouseY = 0;
 let handleMousemove = (event) => {
   mouseX = event.x;
   mouseY = event.y;
-  console.log(`mouse position: ${mouseX}:${mouseY}`);
 };
 
 document.addEventListener('mousemove', handleMousemove);

@@ -1,29 +1,44 @@
 import { Graphics } from 'pixi.js';
 import Vector from './Vector.js';
+import { easeOutCubic, easeInCubic } from './utils.js';
 
 export default class Shape extends Graphics {
   constructor(x, y, radius, color) {
     super();
     this.pos = new Vector(x, y);
-    console.log('position: ', this.pos, this.pos.message);
+    console.log('position: ', this.pos);
     this.radius = radius;
     this.color = color;
-    this.momentum = new Vector(0.0, 0.0);
+    this.acceleration = new Vector(0.01, 0.01);
+    this.vel = new Vector(0.01, 0.01);
+    console.log('This: ', this);
   }
 
-  followMouse(mouseX, mouseY) {
-    let diff = new Vector(mouseX - this.pos.x, mouseY - this.pos.y);
-    diff.mult(0.001);
+  followMouse = (mouseX, mouseY) => {
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    let mouse = new Vector(mouseX, mouseY);
+    let dir = new Vector(this.pos.x, this.pos.y);
 
-    this.momentum.add(diff);
-    this.momentum.max(5.0);
-    console.log('momentum: ', this.momentum.x, this.momentum.y);
-    // diff.normalize();
-    // diff.mult(this.momentum);
-    this.pos.add(this.momentum);
+    dir.sub(mouse);
+
+    // when closer the ball is to the mouse, the closer to 0.00 this will be. Farther is closer to 1
+    let normalizedDiff = new Vector(easeOutCubic(Math.abs(dir.x / windowWidth)) * -1, easeOutCubic(Math.abs(dir.y / windowHeight)) * -1);
+
+    dir.normalize();
+    dir.multVector(normalizedDiff);
+
+    this.acceleration.set(dir);
+
+    this.vel.add(this.acceleration);
+    this.vel.limit(10);
+
+    this.vel.add(this.acceleration);
+
+    this.pos.add(this.vel);
   }
 
-  move({ delta, mouseX, mouseY }) {
+  move({ mouseX, mouseY }) {
     this.followMouse(mouseX, mouseY);
 
     this.x = this.pos.x;
