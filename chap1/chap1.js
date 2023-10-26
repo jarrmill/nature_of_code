@@ -1,4 +1,4 @@
-import './style.css';
+import '../style.css';
 import { Application, Container }from 'pixi.js';
 import Shape from './Shape.js';
 

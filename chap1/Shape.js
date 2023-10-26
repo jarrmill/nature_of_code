@@ -33,7 +33,6 @@ export default class Shape extends Graphics {
     this.vel.add(this.acceleration);
     this.vel.limit(10);
 
-    this.vel.add(this.acceleration);
 
     this.pos.add(this.vel);
   }
